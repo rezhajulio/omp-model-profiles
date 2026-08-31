@@ -9,7 +9,8 @@ Switch your entire suite of model roles (`default`, `task`, `slow`, `plan`, `vis
 ## ⚡ Features
 
 - **🚀 Live in-session switching**: Instantly switch the active model and thinking effort in your current chat.
-- **🔄 Full fleet reconfiguration**: Atomically updates all OMP model roles (`modelRoles`) in-memory via OMP's Settings singleton (`pi.pi.settings.setModelRole`) and on disk (`~/.omp/agent/config.yml`) so subagents (`task`), planners (`plan`), image inspectors (`vision`), and advisors (`advisor`) immediately use the new profile.
+- **🔄 Full fleet reconfiguration**: Applies all model roles (`modelRoles`) in-memory via OMP's runtime settings override layer so subagents (`task`), planners (`plan`), image inspectors (`vision`), and advisors (`advisor`) immediately use the new profile.
+- **🛡️ Multi-instance isolation**: Profile switches only affect the current running terminal session. Other concurrent OMP instances remain completely untouched.
 - **🎨 Interactive TUI selector**: Type `/profile` to pop up an interactive dialog with fuzzy search and model previews.
 - **⌨️ Direct command shortcut**: Fast-switch directly from chat: `/profile anthropic`, `/profile chinese`, `/profile antigravity`, `/profile openai`.
 - **💾 Profile saving**: Save your current runtime `modelRoles` to a reusable profile with `/profile save <name>`.
@@ -19,9 +20,9 @@ Switch your entire suite of model roles (`default`, `task`, `slow`, `plan`, `vis
 
 ## 📥 Installation
 
-### Method 1: Git Plugin Install (Recommended)
+### Single Command (Recommended)
 
-Install directly from GitHub via OMP's plugin manager:
+Install directly using OMP's built-in plugin manager:
 
 ```bash
 omp plugin install github:rezhajulio/omp-model-profiles
@@ -30,22 +31,6 @@ omp plugin install github:rezhajulio/omp-model-profiles
 Or from inside an active OMP chat session:
 ```
 /plugin install github:rezhajulio/omp-model-profiles
-```
-
-### Method 2: Direct File Copy
-
-Copy `src/index.ts` directly into your OMP extensions folder:
-
-```bash
-mkdir -p ~/.omp/agent/extensions ~/.omp/model-profiles
-cp src/index.ts ~/.omp/agent/extensions/model-profiles.ts
-```
-
-### Method 3: Git Clone & Symlink
-
-```bash
-git clone https://github.com/rezhajulio/omp-model-profiles.git ~/Workspace/omp-model-profiles
-ln -sf ~/Workspace/omp-model-profiles/src/index.ts ~/.omp/agent/extensions/model-profiles.ts
 ```
 
 ---
@@ -63,10 +48,10 @@ Opens an interactive dialog showing available profiles and their models:
 
 ```
 ┌─ Select Model Profile ────────────────────────────────────────────────────────┐
-│ > anthropic    default: anthropic/claude-sonnet-5:high | slow: ...opus-5      │
+│ > anthropic    default: anthropic/claude-sonnet-4-6:high | slow: ...opus-4-6  │
 │   chinese      default: 9router/cmc/deepseek/deepseek-v4-flash:high | slow... │
 │   antigravity  default: google-antigravity/gemini-3.7-flash:high | slow...   │
-│   openai       default: openai/gpt-5.6-sol:high | slow: openai/gpt-5.6-sol-pro │
+│   openai       default: openai/gpt-5.3-codex:auto | slow: openai/gpt-5.4-pro │
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -92,7 +77,7 @@ Opens an interactive dialog showing available profiles and their models:
 ```
 /profile save my-custom-profile
 ```
-Creates `~/.omp/model-profiles/my-custom-profile.yml` from your active `~/.omp/agent/config.yml`.
+Creates `~/.omp/model-profiles/my-custom-profile.yml`.
 
 ---
 
@@ -103,18 +88,18 @@ Profiles are stored as standard YAML files inside `~/.omp/model-profiles/<name>.
 ### Example: `~/.omp/model-profiles/anthropic.yml`
 
 ```yaml
-# Anthropic Claude 5 Profile (Claude Sonnet 5, Claude Opus 5, Claude Fable 5, Claude Haiku 4.5)
+# Anthropic Claude Profile (Claude Sonnet 4.6, Claude Opus 4.6, Claude Haiku 4.5)
 modelRoles:
-  default: anthropic/claude-sonnet-5:high
-  smol: anthropic/claude-haiku-4-5:none
-  slow: anthropic/claude-opus-5:high
-  vision: anthropic/claude-sonnet-5:none
-  plan: anthropic/claude-fable-5:max
-  task: anthropic/claude-haiku-4-5:none
-  advisor: anthropic/claude-fable-5:high
-  commit: anthropic/claude-haiku-4-5:none
-  designer: anthropic/claude-sonnet-5:high
-  tiny: anthropic/claude-haiku-4-5:none
+  default: anthropic/claude-sonnet-4-6:high
+  smol: anthropic/claude-haiku-4.5:none
+  slow: anthropic/claude-opus-4-6:high
+  vision: anthropic/claude-sonnet-4-6:none
+  plan: anthropic/claude-opus-4-6:max
+  task: anthropic/claude-haiku-4.5:none
+  advisor: anthropic/claude-opus-5:high
+  commit: anthropic/claude-haiku-4.5:none
+  designer: anthropic/claude-sonnet-4-6:high
+  tiny: anthropic/claude-haiku-4.5:none
 ```
 
 ### Thinking Level Suffixes
@@ -134,17 +119,15 @@ Check the [`examples/`](./examples) directory for ready-to-use profiles:
 
 | Profile | Primary (`default`) | Reasoning (`slow` / `plan`) | Subagents (`task`) | Best For |
 |---|---|---|---|---|
-| [`anthropic.yml`](./examples/anthropic.yml) | Claude Sonnet 5 | Claude Opus 5 / Fable 5 | Claude Haiku 4.5 | Deep architecture, refactoring & code review |
-| [`antigravity.yml`](./examples/antigravity.yml) | Gemini 3.7 Flash | Gemini 3.1 Pro | Gemini 3.1 Flash Lite / 3.7 Flash | Fast loops, native vision & 1M context |
-| [`chinese.yml`](./examples/chinese.yml) | DeepSeek V4 Flash | DeepSeek V4 Pro | DeepSeek V4 Flash | High speed, 1M context via 9router proxy |
-| [`deepseek.yml`](./examples/deepseek.yml) | DeepSeek V4 Flash | DeepSeek V4 Pro | DeepSeek V4 Flash | Direct DeepSeek API integration |
-| [`google.yml`](./examples/google.yml) | Gemini 3.7 Flash | Gemini 3.1 Pro Preview | Gemini 3.1 Flash Lite | Direct Google AI / Gemini API integration |
-| [`openai.yml`](./examples/openai.yml) | GPT-5.6 Sol | GPT-5.6 Sol Pro | GPT-5.6 Terra / Luna | Frontier reasoning & autonomous coding |
-| [`xai.yml`](./examples/xai.yml) | Grok 4 Fast | Grok 4.20 Reasoning | Grok 4 Fast / Grok 3 Mini | Fast coding loops with real-time reasoning |
-| [`local-ollama.yml`](./examples/local-ollama.yml) | Qwen3-Coder 30B | DeepSeek-R1 / V4 32B | Qwen3-Coder 7B | 100% offline & local execution |
+| [`anthropic.yml`](./examples/anthropic.yml) | Claude Sonnet 4.6 | Claude Opus 4.6 / Opus 5 | Claude Haiku 4.5 | Deep architecture, refactoring & code review |
+| [`chinese.yml`](./examples/chinese.yml) | DeepSeek V4 Flash | DeepSeek V4 Pro | DeepSeek V4 Flash | High speed, 1M context & low token cost |
+| [`antigravity.yml`](./examples/antigravity.yml) | Gemini 3.7 Flash | Gemini 3 Pro | Gemini 3.7 Flash | Fast loops, native vision & 1M context |
+| [`openai.yml`](./examples/openai.yml) | GPT-5.3-Codex | GPT-5.4-Pro | GPT-5.4-Mini | Advanced reasoning & frontier coding |
+| [`local-ollama.yml`](./examples/local-ollama.yml) | Qwen2.5-Coder 32B | DeepSeek-R1 32B | Qwen2.5-Coder 7B | 100% offline & local execution |
 
 To install all example profiles:
 ```bash
+mkdir -p ~/.omp/model-profiles
 cp examples/*.yml ~/.omp/model-profiles/
 ```
 
