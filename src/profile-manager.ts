@@ -1,6 +1,6 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { parseSimpleYaml, stringifySimpleYaml, updateConfigFileModelRoles } from "./yaml-utils";
+import { parseSimpleYaml, stringifySimpleYaml } from "./yaml-utils";
 import type {
   ApplyProfileOptions,
   ApplyProfileResult,
@@ -61,7 +61,7 @@ export function readProfile(filePath: string): ProfileData | undefined {
 }
 
 /**
- * Parses a model selector string (e.g. "anthropic/claude-haiku-4.5:high")
+ * Parses a model selector string (e.g. "anthropic/claude-sonnet-4-6:high")
  * into base model string and optional thinking level.
  */
 export function parseModelSelector(selector: string): ParsedModelSelector {
@@ -79,10 +79,12 @@ export function parseModelSelector(selector: string): ParsedModelSelector {
 }
 
 /**
- * Applies a profile to the active OMP session and updates all in-memory and persisted roles.
+ * Applies a profile to the active OMP session and installs in-memory runtime overrides.
+ * This guarantees changes remain isolated to the current OMP instance and do not affect
+ * other concurrent OMP processes.
  */
 export async function applyProfile(options: ApplyProfileOptions): Promise<ApplyProfileResult> {
-  const { name, profilePath, configFile, pi, ctx } = options;
+  const { name, profilePath, pi, ctx } = options;
   const data = readProfile(profilePath);
 
   if (!data || !data.modelRoles) {
@@ -143,32 +145,19 @@ export async function applyProfile(options: ApplyProfileOptions): Promise<ApplyP
     };
   }
 
-  // 2. Update all roles in-memory through Settings singleton if available (which also updates config.yml)
-  let settingsUpdated = false;
+  // 2. Install runtime in-memory overrides for all roles on the active Settings instance.
+  // This updates subagents, planning, advisors, and vision in this instance without modifying
+  // global config.yml on disk, ensuring concurrent OMP instances are not affected.
   const settingsObj = pi.pi?.settings ?? pi.pi?.Settings?.instance;
-  if (settingsObj && typeof settingsObj.setModelRole === "function") {
+  if (settingsObj) {
     try {
-      for (const [role, selector] of Object.entries(modelRoles)) {
-        settingsObj.setModelRole(role, selector);
+      if (typeof settingsObj.override === "function") {
+        settingsObj.override("modelRoles", modelRoles);
+      } else if (typeof settingsObj.overrideModelRoles === "function") {
+        settingsObj.overrideModelRoles(modelRoles);
       }
-      settingsUpdated = true;
     } catch {
-      settingsUpdated = false;
-    }
-  }
-
-  if (!settingsUpdated) {
-    // Fallback: update config.yml file on disk
-    try {
-      updateConfigFileModelRoles(configFile, modelRoles);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      return {
-        success: true,
-        model: resolvedModel,
-        thinkingLevel,
-        error: `Applied active model but failed to save config.yml: ${msg}`,
-      };
+      // ignore
     }
   }
 
@@ -180,16 +169,19 @@ export async function applyProfile(options: ApplyProfileOptions): Promise<ApplyP
 }
 
 /**
- * Saves current model roles from config.yml into a profile YAML file.
+ * Saves current model roles from active settings or config.yml into a profile YAML file.
  */
 export function saveCurrentRolesToProfile(
   configPath: string,
   profilesDir: string,
-  targetName: string
+  targetName: string,
+  settingsObj?: { getModelRoles?: () => Record<string, string> }
 ): { success: boolean; path?: string; error?: string } {
   try {
     let currentRoles: Record<string, string> = {};
-    if (fs.existsSync(configPath)) {
+    if (settingsObj && typeof settingsObj.getModelRoles === "function") {
+      currentRoles = { ...settingsObj.getModelRoles() };
+    } else if (fs.existsSync(configPath)) {
       const content = fs.readFileSync(configPath, "utf-8");
       const parsed = parseSimpleYaml(content);
       if (parsed.modelRoles && typeof parsed.modelRoles === "object") {

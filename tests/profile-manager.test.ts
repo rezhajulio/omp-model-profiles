@@ -30,14 +30,14 @@ describe("Profile Manager", () => {
 
   describe("parseModelSelector", () => {
     it("parses model without thinking suffix", () => {
-      const parsed = parseModelSelector("anthropic/claude-haiku-4.5");
-      expect(parsed.modelSpec).toBe("anthropic/claude-haiku-4.5");
+      const parsed = parseModelSelector("anthropic/claude-sonnet-4-6");
+      expect(parsed.modelSpec).toBe("anthropic/claude-sonnet-4-6");
       expect(parsed.thinkingLevel).toBeUndefined();
     });
 
     it("parses model with thinking suffix", () => {
-      const parsed = parseModelSelector("anthropic/claude-haiku-4.5:high");
-      expect(parsed.modelSpec).toBe("anthropic/claude-haiku-4.5");
+      const parsed = parseModelSelector("anthropic/claude-sonnet-4-6:high");
+      expect(parsed.modelSpec).toBe("anthropic/claude-sonnet-4-6");
       expect(parsed.thinkingLevel).toBe("high");
     });
 
@@ -52,7 +52,7 @@ describe("Profile Manager", () => {
     it("discovers .yml and .yaml files in directory", () => {
       fs.writeFileSync(
         path.join(profilesDir, "anthropic.yml"),
-        "modelRoles:\n  default: anthropic/claude:high\n"
+        "modelRoles:\n  default: anthropic/claude-sonnet-4-6:high\n"
       );
       fs.writeFileSync(
         path.join(profilesDir, "chinese.yaml"),
@@ -67,18 +67,18 @@ describe("Profile Manager", () => {
       const pPath = path.join(profilesDir, "test.yml");
       fs.writeFileSync(
         pPath,
-        "modelRoles:\n  default: anthropic/claude-3.5:high\n  slow: anthropic/opus:max\n"
+        "modelRoles:\n  default: anthropic/claude-sonnet-4-6:high\n  slow: anthropic/opus:max\n"
       );
 
       const data = readProfile(pPath);
       expect(data).toBeDefined();
-      expect(data?.modelRoles.default).toBe("anthropic/claude-3.5:high");
+      expect(data?.modelRoles.default).toBe("anthropic/claude-sonnet-4-6:high");
       expect(data?.modelRoles.slow).toBe("anthropic/opus:max");
     });
   });
 
   describe("applyProfile", () => {
-    it("switches model, updates in-memory settings.setModelRole, and persists roles", async () => {
+    it("switches model and installs in-memory settings runtime overrides without modifying disk", async () => {
       const profilePath = path.join(profilesDir, "antigravity.yml");
       fs.writeFileSync(
         profilePath,
@@ -87,7 +87,8 @@ describe("Profile Manager", () => {
 
       let appliedModel: ModelSpec | undefined;
       let appliedThinking: string | undefined;
-      const setRoles: Record<string, string | undefined> = {};
+      let overriddenKey: string | undefined;
+      let overriddenValue: unknown;
 
       const mockPi: ExtensionAPI = {
         registerCommand: () => {},
@@ -100,8 +101,9 @@ describe("Profile Manager", () => {
         },
         pi: {
           settings: {
-            setModelRole: (role, modelId) => {
-              setRoles[role] = modelId;
+            override: (path, value) => {
+              overriddenKey = path;
+              overriddenValue = value;
             },
           },
         },
@@ -137,16 +139,21 @@ describe("Profile Manager", () => {
       expect(result.success).toBe(true);
       expect(appliedModel?.id).toBe("gemini-3.7-flash");
       expect(appliedThinking).toBe("high");
-      expect(setRoles["default"]).toBe("google-antigravity/gemini-3.7-flash:high");
-      expect(setRoles["slow"]).toBe("9router/deepseek:max");
+      expect(overriddenKey).toBe("modelRoles");
+      expect(overriddenValue).toEqual({
+        default: "google-antigravity/gemini-3.7-flash:high",
+        slow: "9router/deepseek:max",
+      });
+      // Global config file should NOT be touched, keeping instances isolated
+      expect(fs.existsSync(configFile)).toBe(false);
     });
   });
 
   describe("saveCurrentRolesToProfile", () => {
-    it("extracts modelRoles from config and writes to new profile file", () => {
+    it("extracts modelRoles from active settings or config and writes to new profile file", () => {
       fs.writeFileSync(
         configFile,
-        "setupVersion: 1\nmodelRoles:\n  default: openai/gpt-4o:auto\n  slow: openai/o3-mini:high\n"
+        "setupVersion: 1\nmodelRoles:\n  default: openai/gpt-5.3-codex:auto\n  slow: openai/gpt-5.4-pro:high\n"
       );
 
       const res = saveCurrentRolesToProfile(configFile, profilesDir, "my-custom-profile");
@@ -157,8 +164,8 @@ describe("Profile Manager", () => {
         path.join(profilesDir, "my-custom-profile.yml"),
         "utf-8"
       );
-      expect(profileContent).toContain("default: openai/gpt-4o:auto");
-      expect(profileContent).toContain("slow: openai/o3-mini:high");
+      expect(profileContent).toContain("default: openai/gpt-5.3-codex:auto");
+      expect(profileContent).toContain("slow: openai/gpt-5.4-pro:high");
     });
   });
 });
