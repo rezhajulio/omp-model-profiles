@@ -6,6 +6,16 @@
   "module": "src/index.ts",
   "types": "src/index.ts",
   "type": "module",
+  "omp": {
+    "extensions": [
+      "src/index.ts"
+    ]
+  },
+  "pi": {
+    "extensions": [
+      "src/index.ts"
+    ]
+  },
   "scripts": {
     "test": "bun test",
     "test:coverage": "bun test --coverage",
@@ -16,6 +26,7 @@
     "omp",
     "oh-my-pi",
     "pi-extension",
+    "omp-plugin",
     "model-profiles",
     "llm",
     "ai"
@@ -27,7 +38,7 @@
     "url": "https://github.com/rezhajulio/omp-model-profiles.git"
   },
   "devDependencies": {
-    "@types/node": "^22.13.0",
-    "typescript": "^5.7.3"
+    "@types/node": "^22.20.1",
+    "typescript": "^5.9.3"
   }
 }

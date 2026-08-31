@@ -1,13 +1,14 @@
-# OpenAI Profile (GPT-5.4, GPT-5.4-Pro, GPT-5.3-Codex, GPT-5.4-Mini)
-# Advanced reasoning, high-precision coding, and frontier multimodal understanding.
+# OpenAI GPT-5.6 Profile (GPT-5.6 Sol / Sol Pro, GPT-5.6 Terra, GPT-5.6 Luna, GPT-5.3 Codex)
+# Frontier reasoning, autonomous agentic workflows, high-precision coding, and ultra-fast subagents.
 modelRoles:
-  default: openai/gpt-5.3-codex:auto
-  smol: openai/gpt-5.4-mini:none
-  slow: openai/gpt-5.4-pro:high
-  vision: openai/gpt-5.4:none
-  plan: openai/gpt-5.4-pro:max
-  task: openai/gpt-5.4-mini:none
-  advisor: openai/gpt-5.4-pro:high
-  commit: openai/gpt-5.4-nano:none
-  designer: openai/gpt-5.4:high
-  tiny: openai/gpt-5.4-nano:none
+  default: openai/gpt-5.6-sol:high
+  smol: openai/gpt-5.6-luna:none
+  slow: openai/gpt-5.6-sol-pro:high
+  vision: openai/gpt-5.6-terra:none
+  plan: openai/gpt-5.6-sol-pro:max
+  task: openai/gpt-5.6-terra:low
+  advisor: openai/gpt-5.6-sol-pro:high
+  commit: openai/gpt-5.6-luna:none
+  designer: openai/gpt-5.6-terra:high
+  tiny: openai/gpt-5.6-luna:none
+

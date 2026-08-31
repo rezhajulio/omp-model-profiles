@@ -1,0 +1,13 @@
+# xAI Grok Profile (Grok 4, Grok 4.1 Fast, Grok 4.20 Reasoning, Grok 3 Mini)
+# High-speed frontier coding with deep reasoning and real-time knowledge.
+modelRoles:
+  default: xai/grok-4-fast:high
+  smol: xai/grok-3-mini:none
+  slow: xai/grok-4.20-reasoning:high
+  vision: xai/grok-4-fast:none
+  plan: xai/grok-4.20-reasoning:max
+  task: xai/grok-4-fast:low
+  advisor: xai/grok-4.20-reasoning:high
+  commit: xai/grok-3-mini:none
+  designer: xai/grok-4:high
+  tiny: xai/grok-3-mini:none

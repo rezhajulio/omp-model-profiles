@@ -1,13 +1,14 @@
-# Anthropic Claude Profile (Claude Sonnet 4.6 / Sonnet 5, Claude Opus 4.6 / Opus 5, Claude Haiku 4.5)
-# Best for deep architecture, complex refactoring, and frontier code review.
+# Anthropic Claude 5 Profile (Claude Sonnet 5, Claude Opus 5, Claude Fable 5 / Mythos 5, Claude Haiku 4.5)
+# Best for deep architecture, complex multi-step refactoring, and frontier code review.
 modelRoles:
-  default: anthropic/claude-sonnet-4-6:high
+  default: anthropic/claude-sonnet-5:high
   smol: anthropic/claude-haiku-4-5:none
-  slow: anthropic/claude-opus-4-6:high
-  vision: anthropic/claude-sonnet-4-6:none
-  plan: anthropic/claude-opus-4-6:max
+  slow: anthropic/claude-opus-5:high
+  vision: anthropic/claude-sonnet-5:none
+  plan: anthropic/claude-fable-5:max
   task: anthropic/claude-haiku-4-5:none
-  advisor: anthropic/claude-opus-5:high
+  advisor: anthropic/claude-fable-5:high
   commit: anthropic/claude-haiku-4-5:none
-  designer: anthropic/claude-sonnet-4-6:high
+  designer: anthropic/claude-sonnet-5:high
   tiny: anthropic/claude-haiku-4-5:none
+

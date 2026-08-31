@@ -1,0 +1,13 @@
+# Direct DeepSeek API Profile (DeepSeek V4 Flash, DeepSeek V4 Pro)
+# Native provider integration with 1M context and ultra-fast inference.
+modelRoles:
+  default: deepseek/deepseek-v4-flash:high
+  smol: deepseek/deepseek-v4-flash:low
+  slow: deepseek/deepseek-v4-pro:max
+  vision: deepseek/deepseek-v4-flash-vision-exp:medium
+  plan: deepseek/deepseek-v4-pro:max
+  task: deepseek/deepseek-v4-flash:low
+  advisor: deepseek/deepseek-v4-pro:high
+  commit: deepseek/deepseek-v4-flash:low
+  designer: deepseek/deepseek-v4-pro:max
+  tiny: deepseek/deepseek-v4-flash:low

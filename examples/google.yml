@@ -1,0 +1,13 @@
+# Google Gemini Direct Profile (Gemini 3.7 Flash, Gemini 3.1 Pro Preview, Gemini 3.1 Flash Lite)
+# Direct Google AI integration with 1M+ context window and native reasoning.
+modelRoles:
+  default: google/gemini-3.7-flash:high
+  smol: google/gemini-3.1-flash-lite:low
+  slow: google/gemini-3.1-pro-preview:high
+  vision: google/gemini-3.7-flash:low
+  plan: google/gemini-3.1-pro-preview:max
+  task: google/gemini-3.7-flash:low
+  advisor: google/gemini-3.1-pro-preview:high
+  commit: google/gemini-3.1-flash-lite:low
+  designer: google/gemini-3.1-pro-preview:high
+  tiny: google/gemini-3.1-flash-lite:low
