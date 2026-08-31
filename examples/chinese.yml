@@ -1,0 +1,13 @@
+# Chinese LLMs via 9router (DeepSeek V4 Flash/Pro, Xiaomi Mimo, Kimi K2.7, GLM 5.2)
+# Massive 1M context, state-of-the-art coding, low token cost.
+modelRoles:
+  default: 9router/cmc/deepseek/deepseek-v4-flash:high
+  smol: 9router/cmc/deepseek/deepseek-v4-flash:low
+  slow: 9router/cmc/deepseek/deepseek-v4-pro:max
+  vision: 9router/cmc/xiaomi/mimo-v2.5:medium
+  plan: 9router/cmc/deepseek/deepseek-v4-pro:max
+  task: 9router/cmc/deepseek/deepseek-v4-flash:low
+  advisor: 9router/cmc/xiaomi/mimo-v2.5-pro:high
+  commit: 9router/cmc/deepseek/deepseek-v4-flash:low
+  designer: 9router/cmc/deepseek/deepseek-v4-pro:max
+  tiny: 9router/cmc/deepseek/deepseek-v4-flash:low

@@ -1,0 +1,13 @@
+# Google Antigravity & Gemini Profile (Gemini 3.7 Flash, Gemini 3 Pro)
+# Fast response loops, 1M context window, and native multimodal vision.
+modelRoles:
+  default: google-antigravity/gemini-3.7-flash:high
+  smol: google-antigravity/gemini-3.7-flash:low
+  slow: google-antigravity/gemini-3-pro:high
+  vision: google-antigravity/gemini-3.7-flash:low
+  plan: google-antigravity/gemini-3-pro:high
+  task: google-antigravity/gemini-3.7-flash:low
+  advisor: google-antigravity/gemini-3-pro:high
+  commit: google-antigravity/gemini-3.7-flash:low
+  designer: google-antigravity/gemini-3-pro:high
+  tiny: google-antigravity/gemini-3.7-flash:low

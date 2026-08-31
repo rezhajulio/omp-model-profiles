@@ -1,0 +1,13 @@
+# Local Ollama / vLLM Offline Profile
+# Completely offline execution using locally served models.
+modelRoles:
+  default: ollama/qwen2.5-coder:32b:none
+  smol: ollama/qwen2.5-coder:7b:none
+  slow: ollama/deepseek-r1:32b:none
+  vision: ollama/llava:13b:none
+  plan: ollama/deepseek-r1:32b:none
+  task: ollama/qwen2.5-coder:7b:none
+  advisor: ollama/deepseek-r1:32b:none
+  commit: ollama/qwen2.5-coder:7b:none
+  designer: ollama/qwen2.5-coder:32b:none
+  tiny: ollama/qwen2.5-coder:1.5b:none

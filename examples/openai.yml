@@ -1,0 +1,13 @@
+# OpenAI Profile (GPT-5.4, GPT-5.4-Pro, GPT-5.3-Codex, GPT-5.4-Mini)
+# Advanced reasoning, high-precision coding, and frontier multimodal understanding.
+modelRoles:
+  default: openai/gpt-5.3-codex:auto
+  smol: openai/gpt-5.4-mini:none
+  slow: openai/gpt-5.4-pro:high
+  vision: openai/gpt-5.4:none
+  plan: openai/gpt-5.4-pro:max
+  task: openai/gpt-5.4-mini:none
+  advisor: openai/gpt-5.4-pro:high
+  commit: openai/gpt-5.4-nano:none
+  designer: openai/gpt-5.4:high
+  tiny: openai/gpt-5.4-nano:none
