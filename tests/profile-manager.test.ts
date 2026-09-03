@@ -82,7 +82,7 @@ describe("Profile Manager", () => {
       const profilePath = path.join(profilesDir, "antigravity.yml");
       fs.writeFileSync(
         profilePath,
-        "modelRoles:\n  default: google-antigravity/gemini-3.7-flash:high\n  slow: 9router/deepseek:max\n"
+        "modelRoles:\n  default: google-antigravity/gemini-3.8-flash:high\n  slow: 9router/deepseek:max\n"
       );
 
       let appliedModel: ModelSpec | undefined;
@@ -117,11 +117,11 @@ describe("Profile Manager", () => {
         },
         models: {
           list: () => [
-            { id: "gemini-3.7-flash", provider: "google-antigravity" },
+            { id: "gemini-3.8-flash", provider: "google-antigravity" },
           ],
           resolve: (spec) => {
-            if (spec === "google-antigravity/gemini-3.7-flash") {
-              return { id: "gemini-3.7-flash", provider: "google-antigravity" };
+            if (spec === "google-antigravity/gemini-3.8-flash") {
+              return { id: "gemini-3.8-flash", provider: "google-antigravity" };
             }
             return undefined;
           },
@@ -137,11 +137,11 @@ describe("Profile Manager", () => {
       });
 
       expect(result.success).toBe(true);
-      expect(appliedModel?.id).toBe("gemini-3.7-flash");
+      expect(appliedModel?.id).toBe("gemini-3.8-flash");
       expect(appliedThinking).toBe("high");
       expect(overriddenKey).toBe("modelRoles");
       expect(overriddenValue).toEqual({
-        default: "google-antigravity/gemini-3.7-flash:high",
+        default: "google-antigravity/gemini-3.8-flash:high",
         slow: "9router/deepseek:max",
       });
       // Global config file should NOT be touched, keeping instances isolated
