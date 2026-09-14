@@ -49,7 +49,7 @@ Opens an interactive dialog showing available profiles and their models:
 ```
 ┌─ Select Model Profile ────────────────────────────────────────────────────────┐
 │ > anthropic    default: anthropic/claude-sonnet-4-6:high | slow: ...opus-4-6  │
-│   chinese      default: 9router/cmc/deepseek/deepseek-v4-flash:high | slow... │
+│   chinese      default: 9router/tk/deepseek/deepseek-v4.1-flash:high | slow... │
 │   antigravity  default: google-antigravity/gemini-3.8-flash:high | slow...   │
 │   openai       default: openai/gpt-5.3-codex:auto | slow: openai/gpt-5.4-pro │
 └───────────────────────────────────────────────────────────────────────────────┘
@@ -120,7 +120,7 @@ Check the [`examples/`](./examples) directory for ready-to-use profiles:
 | Profile | Primary (`default`) | Reasoning (`slow` / `plan`) | Subagents (`task`) | Best For |
 |---|---|---|---|---|
 | [`anthropic.yml`](./examples/anthropic.yml) | Claude Sonnet 4.6 | Claude Opus 4.6 / Opus 5 | Claude Haiku 4.5 | Deep architecture, refactoring & code review |
-| [`chinese.yml`](./examples/chinese.yml) | DeepSeek V4 Flash | DeepSeek V4 Pro | DeepSeek V4 Flash | High speed, 1M context & low token cost |
+| [`chinese.yml`](./examples/chinese.yml) | DeepSeek V4.1 Flash | DeepSeek V4 Pro | DeepSeek V4.1 Flash | High speed, 1M context & low token cost |
 | [`antigravity.yml`](./examples/antigravity.yml) | Gemini 3.8 Flash | Gemini 3 Pro | Gemini 3.8 Flash | Fast loops, native vision & 1M context |
 | [`openai.yml`](./examples/openai.yml) | GPT-5.3-Codex | GPT-5.4-Pro | GPT-5.4-Mini | Advanced reasoning & frontier coding |
 | [`local-ollama.yml`](./examples/local-ollama.yml) | Qwen2.5-Coder 32B | DeepSeek-R1 32B | Qwen2.5-Coder 7B | 100% offline & local execution |

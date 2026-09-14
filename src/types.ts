@@ -51,11 +51,17 @@ export interface ExtensionAPI {
   setThinkingLevel: (level: string) => void;
   pi?: {
     settings?: {
-      setModelRole: (role: string, modelId: string | undefined) => void;
+      setModelRole?: (role: string, modelId: string | undefined) => void;
+      override?: (key: string, value: unknown) => void;
+      overrideModelRoles?: (roles: Record<string, string>) => void;
+      [key: string]: unknown;
     };
     Settings?: {
       instance?: {
-        setModelRole: (role: string, modelId: string | undefined) => void;
+        setModelRole?: (role: string, modelId: string | undefined) => void;
+        override?: (key: string, value: unknown) => void;
+        overrideModelRoles?: (roles: Record<string, string>) => void;
+        [key: string]: unknown;
       };
     };
   };
