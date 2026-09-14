@@ -87,7 +87,7 @@ describe("Extension Command Handlers", () => {
   it("handles /profile <name> direct switch", async () => {
     fs.writeFileSync(
       path.join(profilesDir, "chinese.yml"),
-      "modelRoles:\n  default: 9router/cmc/deepseek/deepseek-v4-flash:high\n"
+      "modelRoles:\n  default: 9router/cmc/deepseek/deepseek-v4.1-flash:high\n"
     );
 
     let commandHandler: Function | undefined;
@@ -121,8 +121,8 @@ describe("Extension Command Handlers", () => {
       models: {
         list: () => [],
         resolve: (spec) => {
-          if (spec === "9router/cmc/deepseek/deepseek-v4-flash") {
-            return { id: "deepseek-v4-flash", provider: "9router" };
+          if (spec === "9router/cmc/deepseek/deepseek-v4.1-flash") {
+            return { id: "deepseek-v4.1-flash", provider: "9router" };
           }
           return undefined;
         },
@@ -130,7 +130,7 @@ describe("Extension Command Handlers", () => {
     };
 
     await commandHandler!("chinese", mockCtx);
-    expect(switchedModel?.id).toBe("deepseek-v4-flash");
+    expect(switchedModel?.id).toBe("deepseek-v4.1-flash");
     expect(switchedThinking).toBe("high");
     expect(notifiedMessage).toContain("Switched to profile");
   });
