@@ -49,7 +49,7 @@ Opens an interactive dialog showing available profiles and their models:
 ```
 ┌─ Select Model Profile ────────────────────────────────────────────────────────┐
 │ > anthropic    default: anthropic/claude-sonnet-4-6:high | slow: ...opus-4-6  │
-│   chinese      default: 9router/cmc/deepseek/deepseek-v4.1-flash:high | slow... │
+│   chinese      default: 9router/cmc/deepseek/deepseek-v4-flash:high | slow... │
 │   antigravity  default: google-antigravity/gemini-3.8-flash:high | slow...   │
 │   openai       default: openai/gpt-5.3-codex:auto | slow: openai/gpt-5.4-pro │
 └───────────────────────────────────────────────────────────────────────────────┘
@@ -120,7 +120,7 @@ Check the [`examples/`](./examples) directory for ready-to-use profiles:
 | Profile | Primary (`default`) | Reasoning (`slow` / `plan`) | Subagents (`task`) | Best For |
 |---|---|---|---|---|
 | [`anthropic.yml`](./examples/anthropic.yml) | Claude Sonnet 4.6 | Claude Opus 4.6 / Opus 5 | Claude Haiku 4.5 | Deep architecture, refactoring & code review |
-| [`chinese.yml`](./examples/chinese.yml) | CMC DeepSeek V4.1 Flash | CMC DeepSeek V4 Pro | CMC DeepSeek V4.1 Flash | High speed, 1M context & low token cost via 9router |
+| [`chinese.yml`](./examples/chinese.yml) | CMC DeepSeek V4 Flash | CMC DeepSeek V4 Pro | CMC DeepSeek V4 Flash | High speed, 1M context & low token cost via 9router |
 | [`deepseek.yml`](./examples/deepseek.yml) | DeepSeek V4.1 Flash | DeepSeek V4 Pro | DeepSeek V4.1 Flash | Direct native DeepSeek provider integration |
 | [`antigravity.yml`](./examples/antigravity.yml) | Gemini 3.8 Flash | Gemini 3 Pro | Gemini 3.8 Flash | Fast loops, native vision & 1M context |
 | [`google.yml`](./examples/google.yml) | Gemini 3.8 Flash | Gemini 3.1 Pro Preview | Gemini 3.8 Flash | Direct Google AI provider with large context |
