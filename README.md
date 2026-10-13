@@ -1,8 +1,37 @@
-# 🎭 omp-model-profiles
+# 🎭 omp-model-profiles [DEPRECATED]
 
-**Dynamic model profile switcher for [Oh My Pi (OMP)](https://github.com/can1357/oh-my-pi)**.
+> ⚠️ **DEPRECATION NOTICE**: This plugin is deprecated.
+> Oh My Pi (OMP) introduced native model presets in **v18.4.5** (PR #5253).
+> Use built-in `/modelpreset [list | switch | save | delete]` and `modelPresets` in `config.yml`. No external plugin required.
 
-Switch your entire suite of model roles (`default`, `task`, `slow`, `plan`, `vision`, `advisor`, `designer`, `tiny`) and thinking levels on the fly **without killing, restarting, or leaving your active OMP session**.
+---
+
+## 🔄 Migration to Native OMP `/modelpreset`
+
+| Plugin Command | Native OMP Equivalent (v18.4.5+) |
+|---|---|
+| `/profile <name>` | `/modelpreset switch <name>` |
+| `/profile` (interactive) | `/modelpreset` (or `s` in `/models` Roles view) |
+| `/profile list` | `/modelpreset list` |
+| `/profile save <name>` | `/modelpreset save <name>` |
+| `/profile delete <name>` | `/modelpreset delete <name>` |
+
+Instead of separate YAML files in `~/.omp/model-profiles/*.yml`, define presets directly in `~/.omp/agent/config.yml`:
+
+```yaml
+modelPresets:
+  anthropic:
+    modelRoles:
+      default: anthropic/claude-sonnet-4-6:high
+      smol: anthropic/claude-haiku-4-5
+      slow: anthropic/claude-opus-4-6:high
+      plan: anthropic/claude-opus-4-6:xhigh
+    defaultThinkingLevel: high
+```
+
+---
+
+**Legacy documentation below for archival purposes:**
 
 ---
 
